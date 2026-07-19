@@ -8,7 +8,7 @@ DevPilot CLI is a modular Python command-line toolkit for system inspection,
 safe file analysis, JSON and encoding utilities, accessible terminal themes,
 and robots-aware public web inspection.
 
-> Status: `v0.1.0` release candidate. The command API may change before 1.0.
+> Status: `v0.1.0` alpha release. The command API may change before 1.0.
 
 ## Highlights
 
@@ -28,15 +28,15 @@ and robots-aware public web inspection.
 
 ## Installation
 
-Until the first PyPI release, install from a local clone:
+For an isolated command-line installation, use
+[pipx](https://packaging.python.org/en/latest/guides/installing-stand-alone-command-line-tools/):
 
 ```powershell
-git clone https://github.com/yunopo42/devpilot-cli.git
-cd devpilot-cli
-py -3.13 -m venv .venv
-.\.venv\Scripts\Activate.ps1
-python -m pip install -e .
+pipx install devpilot-cli
 ```
+
+Alternatively, install DevPilot in an active virtual environment with
+`python -m pip install devpilot-cli`.
 
 Verify the installation:
 
@@ -129,9 +129,13 @@ use cookies, credentials, environment proxies, or browser sessions.
 
 ## Development
 
-Install the project with development tools:
+Clone the repository and install it with development tools:
 
 ```powershell
+git clone https://github.com/yunopo42/devpilot-cli.git
+cd devpilot-cli
+py -3.13 -m venv .venv
+.\.venv\Scripts\Activate.ps1
 python -m pip install -e ".[dev]"
 ```
 

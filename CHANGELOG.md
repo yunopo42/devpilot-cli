@@ -6,9 +6,7 @@ The project follows [Semantic Versioning](https://semver.org/).
 
 ## [Unreleased]
 
-### Planned
-
-- Promote the verified `v0.1.0` package from TestPyPI to PyPI.
+No unreleased changes.
 
 ## [0.1.0] - 2026-07-19
 
