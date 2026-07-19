@@ -3,6 +3,7 @@
 import typer
 
 from .commands.core import about_command, doctor_command, version_command
+from .commands.dev import dev_app
 from .commands.file import file_app
 from .commands.system import system_app
 from .core.errors import DevPilotError, render_error
@@ -38,6 +39,7 @@ app.command("about")(about_command)
 app.command("doctor")(doctor_command)
 app.add_typer(system_app, name="system")
 app.add_typer(file_app, name="file")
+app.add_typer(dev_app, name="dev")
 
 
 def run() -> None:

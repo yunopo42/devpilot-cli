@@ -64,6 +64,22 @@ devpilot file largest . --limit 10
 File hashes are calculated incrementally, so large files are not loaded fully
 into memory. Recursive commands do not follow symbolic links.
 
+Use everyday developer utilities:
+
+```powershell
+devpilot dev json format data.json
+Get-Content data.json | devpilot dev json validate
+devpilot dev json format data.json --write
+devpilot dev base64 encode "hello"
+devpilot dev base64 decode "aGVsbG8="
+devpilot dev uuid --count 5
+devpilot dev password --length 24
+```
+
+JSON files are never modified unless `--write` is provided explicitly. A write
+uses a complete temporary file followed by an atomic replacement. Passwords are
+generated with Python's cryptographically secure `secrets` module.
+
 Run the quality checks:
 
 ```powershell
