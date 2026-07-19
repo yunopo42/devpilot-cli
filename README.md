@@ -23,6 +23,21 @@ Run the CLI:
 devpilot --help
 ```
 
+Core commands:
+
+```powershell
+devpilot version
+devpilot about
+devpilot doctor
+```
+
+Use the global debug option before a command when detailed error diagnostics are
+needed:
+
+```powershell
+devpilot --debug doctor
+```
+
 Run the quality checks:
 
 ```powershell
