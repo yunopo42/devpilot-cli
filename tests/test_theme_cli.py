@@ -8,6 +8,7 @@ from typer.testing import CliRunner
 from devpilot.cli import app
 from devpilot.core.theme import palette_for
 from devpilot.models.config import ThemeName
+from devpilot.services.animation import CI_ENVIRONMENT_KEYS
 from devpilot.services.config import CONFIG_DIRECTORY_ENV, load_config
 
 runner = CliRunner()
@@ -103,8 +104,12 @@ def test_boot_uses_static_fallback_when_animation_is_disabled(
 
 def test_matrix_uses_static_fallback_for_non_interactive_output(
     isolated_config: Path,
+    monkeypatch: pytest.MonkeyPatch,
 ) -> None:
     """Captured or piped output should never run a timed Matrix animation."""
+    for environment_key in CI_ENVIRONMENT_KEYS:
+        monkeypatch.delenv(environment_key, raising=False)
+
     result = runner.invoke(app, ["hacker", "matrix", "--duration", "15"])
 
     assert result.exit_code == 0
