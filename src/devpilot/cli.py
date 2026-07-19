@@ -3,6 +3,7 @@
 import typer
 
 from .commands.core import about_command, doctor_command, version_command
+from .commands.system import system_app
 from .core.errors import DevPilotError, render_error
 from .core.state import AppState
 
@@ -34,6 +35,7 @@ def main(
 app.command("version")(version_command)
 app.command("about")(about_command)
 app.command("doctor")(doctor_command)
+app.add_typer(system_app, name="system")
 
 
 def run() -> None:

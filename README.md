@@ -38,6 +38,19 @@ needed:
 devpilot --debug doctor
 ```
 
+Inspect local system resources:
+
+```powershell
+devpilot system info
+devpilot system cpu
+devpilot system memory
+devpilot system disk
+devpilot system info --output json
+```
+
+Human-facing commands use Rich tables. The JSON output preserves byte counts as
+numbers so it can be consumed safely by scripts and other tools.
+
 Run the quality checks:
 
 ```powershell
