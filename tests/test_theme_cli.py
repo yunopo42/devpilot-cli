@@ -83,3 +83,31 @@ def test_hacker_palette_differs_from_standard() -> None:
 
     assert standard.primary != hacker.primary
     assert standard.accent != hacker.accent
+
+
+def test_boot_uses_static_fallback_when_animation_is_disabled(
+    isolated_config: Path,
+) -> None:
+    """The global opt-out should render boot content without waiting."""
+    result = runner.invoke(
+        app,
+        ["--no-animation", "hacker", "boot"],
+    )
+
+    assert result.exit_code == 0
+    assert "Initializing DevPilot Core" in result.stdout
+    assert "System ready" in result.stdout
+    assert "disabled by --no-animation" in result.stdout
+    assert not isolated_config.exists()
+
+
+def test_matrix_uses_static_fallback_for_non_interactive_output(
+    isolated_config: Path,
+) -> None:
+    """Captured or piped output should never run a timed Matrix animation."""
+    result = runner.invoke(app, ["hacker", "matrix", "--duration", "15"])
+
+    assert result.exit_code == 0
+    assert "DevPilot CLI" in result.stdout
+    assert "output is not an interactive terminal" in result.stdout
+    assert not isolated_config.exists()

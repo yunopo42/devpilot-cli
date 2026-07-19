@@ -28,10 +28,15 @@ def main(
         "--debug",
         help="Show detailed diagnostic information when an error occurs.",
     ),
+    no_animation: bool = typer.Option(
+        False,
+        "--no-animation",
+        help="Disable animation for this invocation.",
+    ),
 ) -> None:
     """Run the DevPilot command-line application."""
     global _active_state
-    _active_state = AppState(debug=debug)
+    _active_state = AppState(debug=debug, no_animation=no_animation)
     ctx.obj = _active_state
 
 

@@ -1,13 +1,25 @@
 """Configuration and visual-theme commands."""
 
+import os
+import random
+import time
 from enum import StrEnum
 
 import typer
+from rich.live import Live
 from rich.table import Table
+from rich.text import Text
 
 from ..core.console import console
+from ..core.state import get_app_state
 from ..core.theme import THEMES, palette_for
 from ..models.config import AppConfig, ThemeName
+from ..services.animation import (
+    BOOT_STEPS,
+    AnimationPolicy,
+    generate_matrix_frame,
+    resolve_animation_policy,
+)
 from ..services.config import (
     get_config_path,
     load_config,
@@ -67,6 +79,32 @@ def render_config(config: AppConfig) -> None:
     table.add_row("effective animations", str(config.animations_enabled).lower())
     table.add_row("config path", str(get_config_path()))
     console.print(table)
+
+
+def current_animation_policy(ctx: typer.Context) -> AnimationPolicy:
+    """Resolve animation policy for the current CLI invocation."""
+    state = get_app_state(ctx.find_root().obj)
+    return resolve_animation_policy(
+        load_config(),
+        no_animation=state.no_animation,
+        is_terminal=console.is_terminal,
+        environment=os.environ,
+    )
+
+
+def render_animation_fallback(policy: AnimationPolicy) -> None:
+    """Explain why a visual effect was rendered statically."""
+    palette = palette_for(ThemeName.HACKER)
+    reason = policy.reason or "animation unavailable"
+    console.print(f"Animation skipped: {reason}.", style=palette.muted)
+
+
+def typewriter_line(text: str, *, delay: float = 0.012) -> None:
+    """Print a single line character-by-character."""
+    for character in text:
+        console.print(character, end="", markup=False, soft_wrap=True)
+        time.sleep(delay)
+    console.print()
 
 
 @config_app.command("show")
@@ -133,3 +171,66 @@ def hacker_banner_command() -> None:
     """Display the static Hacker Mode banner without animation."""
     palette = palette_for(ThemeName.HACKER)
     console.print(HACKER_BANNER, style=palette.primary, markup=False)
+
+
+@hacker_app.command("boot")
+def hacker_boot_command(ctx: typer.Context) -> None:
+    """Display a bounded boot sequence with an accessible static fallback."""
+    palette = palette_for(ThemeName.HACKER)
+    policy = current_animation_policy(ctx)
+    console.print(HACKER_BANNER, style=palette.primary, markup=False)
+
+    if not policy.enabled:
+        for step in BOOT_STEPS:
+            console.print(step, style=palette.primary, markup=False)
+        render_animation_fallback(policy)
+        return
+
+    for step in BOOT_STEPS:
+        typewriter_line(step)
+        time.sleep(0.08)
+
+
+@hacker_app.command("matrix")
+def hacker_matrix_command(
+    ctx: typer.Context,
+    duration: float = typer.Option(
+        5.0,
+        "--duration",
+        "-d",
+        min=1.0,
+        max=15.0,
+        help="Animation duration in seconds.",
+    ),
+) -> None:
+    """Run a time-bounded Matrix-style terminal animation."""
+    palette = palette_for(ThemeName.HACKER)
+    policy = current_animation_policy(ctx)
+    if not policy.enabled:
+        console.print(HACKER_BANNER, style=palette.primary, markup=False)
+        render_animation_fallback(policy)
+        return
+
+    random_source = random.Random()
+    deadline = time.monotonic() + duration
+    try:
+        with Live(
+            Text("", style=palette.primary),
+            console=console,
+            refresh_per_second=12,
+            transient=True,
+        ) as live:
+            while time.monotonic() < deadline:
+                size = console.size
+                frame = generate_matrix_frame(
+                    size.width,
+                    max(1, size.height - 2),
+                    random_source=random_source,
+                )
+                live.update(Text(frame, style=palette.primary))
+                time.sleep(0.08)
+    except KeyboardInterrupt:
+        console.print("Matrix interrupted.", style=palette.muted)
+        return
+
+    console.print("Matrix sequence complete.", style=palette.success)

@@ -96,6 +96,18 @@ Settings are validated and stored in the operating system's standard user config
 directory. Hacker Mode changes presentation only; it does not enable security or
 network-access features.
 
+Run optional, bounded visual effects:
+
+```powershell
+devpilot hacker boot
+devpilot hacker matrix --duration 5
+devpilot --no-animation hacker boot
+```
+
+Animations automatically fall back to static output when reduced motion is
+enabled, animations are disabled in config, output is piped, or a CI environment
+is detected. Matrix duration is restricted to 1–15 seconds.
+
 Run the quality checks:
 
 ```powershell
