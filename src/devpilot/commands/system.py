@@ -8,6 +8,7 @@ import typer
 from rich.table import Table
 
 from ..core.console import console
+from ..core.formatting import format_bytes
 from ..models.system import CpuInfo, DiskInfo, MemoryInfo, SystemInfo
 from ..services.system import (
     get_cpu_info,
@@ -28,17 +29,6 @@ system_app = typer.Typer(
     help="Inspect local CPU, memory, disk, and operating-system information.",
     no_args_is_help=True,
 )
-
-
-def format_bytes(value: int) -> str:
-    """Format a byte count using binary units."""
-    size = float(value)
-    for unit in ("B", "KiB", "MiB", "GiB", "TiB"):
-        if abs(size) < 1024.0 or unit == "TiB":
-            return f"{size:.1f} {unit}"
-        size /= 1024.0
-
-    raise AssertionError("unreachable")
 
 
 def render_cpu(cpu: CpuInfo) -> None:

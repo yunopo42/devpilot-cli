@@ -51,6 +51,19 @@ devpilot system info --output json
 Human-facing commands use Rich tables. The JSON output preserves byte counts as
 numbers so it can be consumed safely by scripts and other tools.
 
+Inspect files and directories without modifying them:
+
+```powershell
+devpilot file info README.md
+devpilot file hash README.md
+devpilot file hash README.md --algorithm sha512
+devpilot file tree . --depth 3
+devpilot file largest . --limit 10
+```
+
+File hashes are calculated incrementally, so large files are not loaded fully
+into memory. Recursive commands do not follow symbolic links.
+
 Run the quality checks:
 
 ```powershell
