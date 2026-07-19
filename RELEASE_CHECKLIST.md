@@ -6,7 +6,7 @@
 - [x] Full pytest suite passes.
 - [x] Coverage meets the configured threshold.
 - [x] Ruff lint and format checks pass.
-- [ ] Windows, Ubuntu, and macOS CI jobs pass on Python 3.11-3.13.
+- [x] Windows, Ubuntu, and macOS CI jobs pass on Python 3.11-3.13.
 
 ## Package
 
@@ -26,7 +26,8 @@
 
 ## Publication
 
-- [ ] GitHub Actions is green on `main`.
+- [x] GitHub Actions is green on `main`.
+- [ ] TestPyPI Trusted Publishing is configured for `test-publish.yml`.
 - [ ] TestPyPI upload and clean installation succeed.
 - [ ] Signed or annotated `v0.1.0` tag is created.
 - [ ] GitHub Release is published from the tag.
