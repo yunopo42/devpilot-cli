@@ -7,6 +7,7 @@ from .commands.dev import dev_app
 from .commands.file import file_app
 from .commands.system import system_app
 from .commands.theme import config_app, hacker_app, theme_app
+from .commands.web import web_app
 from .core.errors import DevPilotError, render_error
 from .core.state import AppState
 
@@ -49,6 +50,7 @@ app.add_typer(dev_app, name="dev")
 app.add_typer(config_app, name="config")
 app.add_typer(theme_app, name="theme")
 app.add_typer(hacker_app, name="hacker")
+app.add_typer(web_app, name="web")
 
 
 def run() -> None:

@@ -108,6 +108,19 @@ Animations automatically fall back to static output when reduced motion is
 enabled, animations are disabled in config, output is piped, or a CI environment
 is detected. Matrix duration is restricted to 1–15 seconds.
 
+Inspect public web pages within strict request limits:
+
+```powershell
+devpilot web robots https://example.com
+devpilot web title https://example.com
+devpilot web links https://example.com --limit 20
+devpilot web fetch https://example.com
+```
+
+Web commands respect robots.txt, validate every redirect, reject local/private
+network targets, use a 15-second timeout, and limit response bodies to 2 MiB.
+They do not use cookies, credentials, environment proxies, or browser sessions.
+
 Run the quality checks:
 
 ```powershell
