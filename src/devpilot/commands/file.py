@@ -9,6 +9,7 @@ from rich.tree import Tree
 
 from ..core.console import console
 from ..core.formatting import format_bytes
+from ..core.theme import active_palette
 from ..models.file import FileInfo, HashResult, LargestFile, TreeEntry
 from ..services.file import build_tree, find_largest_files, get_file_info, hash_file
 
@@ -29,8 +30,9 @@ file_app = typer.Typer(
 
 def render_file_info(info: FileInfo) -> None:
     """Render file metadata as a Rich table."""
+    palette = active_palette()
     table = Table(title="File Information")
-    table.add_column("Property", style="cyan")
+    table.add_column("Property", style=palette.primary)
     table.add_column("Value")
     table.add_row("Path", info.path)
     table.add_row("Name", info.name)
@@ -46,19 +48,24 @@ def render_file_info(info: FileInfo) -> None:
 
 def render_hash(result: HashResult) -> None:
     """Render a file digest and its context."""
+    palette = active_palette()
     table = Table(title="File Hash")
-    table.add_column("Property", style="cyan")
+    table.add_column("Property", style=palette.primary)
     table.add_column("Value")
     table.add_row("Path", result.path)
     table.add_row("Algorithm", result.algorithm)
     table.add_row("Size", format_bytes(result.size_bytes))
     console.print(table)
-    console.print(f"[bold cyan]Digest:[/bold cyan] {result.digest}", soft_wrap=True)
+    console.print(
+        f"[{palette.accent}]Digest:[/{palette.accent}] {result.digest}",
+        soft_wrap=True,
+    )
 
 
 def render_tree(root: Path, entries: tuple[TreeEntry, ...]) -> None:
     """Render bounded tree entries as a Rich tree."""
-    tree = Tree(f"[bold cyan]{root}[/bold cyan]")
+    palette = active_palette()
+    tree = Tree(f"[{palette.accent}]{root}[/{palette.accent}]")
     directory_nodes = {".": tree}
 
     for entry in entries:
@@ -76,8 +83,9 @@ def render_tree(root: Path, entries: tuple[TreeEntry, ...]) -> None:
 
 def render_largest(files: tuple[LargestFile, ...]) -> None:
     """Render size-ranked files as a Rich table."""
+    palette = active_palette()
     table = Table(title="Largest Files")
-    table.add_column("Rank", justify="right", style="cyan")
+    table.add_column("Rank", justify="right", style=palette.primary)
     table.add_column("Path")
     table.add_column("Size", justify="right")
 

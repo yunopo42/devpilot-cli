@@ -5,6 +5,7 @@ from pathlib import Path
 import typer
 
 from ..core.console import console
+from ..core.theme import active_palette
 from ..services.encoding import decode_base64, encode_base64
 from ..services.generators import generate_password, generate_uuids
 from ..services.json_tools import (
@@ -84,7 +85,8 @@ def json_format_command(
     if write:
         assert path is not None
         write_text_atomic(path, formatted)
-        console.print(f"[green]Updated:[/green] {path}")
+        palette = active_palette()
+        console.print(f"[{palette.success}]Updated:[/{palette.success}] {path}")
         return
 
     console.print(formatted, markup=False, soft_wrap=True, end="")
@@ -100,7 +102,11 @@ def json_validate_command(
     """Validate JSON and report its top-level value type."""
     data = parse_json(read_input(path))
     value_type = json_type_name(data)
-    console.print(f"[green]Valid JSON[/green] (top-level type: {value_type})")
+    palette = active_palette()
+    console.print(
+        f"[{palette.success}]Valid JSON[/{palette.success}] "
+        f"(top-level type: {value_type})"
+    )
 
 
 @base64_app.command("encode")

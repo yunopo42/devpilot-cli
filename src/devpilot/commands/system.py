@@ -9,6 +9,7 @@ from rich.table import Table
 
 from ..core.console import console
 from ..core.formatting import format_bytes
+from ..core.theme import active_palette
 from ..models.system import CpuInfo, DiskInfo, MemoryInfo, SystemInfo
 from ..services.system import (
     get_cpu_info,
@@ -33,8 +34,9 @@ system_app = typer.Typer(
 
 def render_cpu(cpu: CpuInfo) -> None:
     """Render CPU information as a Rich table."""
+    palette = active_palette()
     table = Table(title="CPU Information")
-    table.add_column("Metric", style="cyan")
+    table.add_column("Metric", style=palette.primary)
     table.add_column("Value")
     table.add_row("Physical cores", str(cpu.physical_cores or "Unknown"))
     table.add_row("Logical cores", str(cpu.logical_cores or "Unknown"))
@@ -44,8 +46,9 @@ def render_cpu(cpu: CpuInfo) -> None:
 
 def render_memory(memory: MemoryInfo) -> None:
     """Render memory information as a Rich table."""
+    palette = active_palette()
     table = Table(title="Memory Information")
-    table.add_column("Metric", style="cyan")
+    table.add_column("Metric", style=palette.primary)
     table.add_column("Value")
     table.add_row("Total", format_bytes(memory.total_bytes))
     table.add_row("Available", format_bytes(memory.available_bytes))
@@ -56,8 +59,9 @@ def render_memory(memory: MemoryInfo) -> None:
 
 def render_disk(disk: DiskInfo) -> None:
     """Render disk information as a Rich table."""
+    palette = active_palette()
     table = Table(title="Disk Information")
-    table.add_column("Metric", style="cyan")
+    table.add_column("Metric", style=palette.primary)
     table.add_column("Value")
     table.add_row("Path", disk.path)
     table.add_row("Total", format_bytes(disk.total_bytes))
@@ -69,8 +73,9 @@ def render_disk(disk: DiskInfo) -> None:
 
 def render_system_info(system: SystemInfo) -> None:
     """Render a complete system summary as a Rich table."""
+    palette = active_palette()
     table = Table(title="DevPilot System Information")
-    table.add_column("Metric", style="cyan")
+    table.add_column("Metric", style=palette.primary)
     table.add_column("Value")
     table.add_row(
         "Operating system",

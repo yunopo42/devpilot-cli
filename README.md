@@ -80,6 +80,22 @@ JSON files are never modified unless `--write` is provided explicitly. A write
 uses a complete temporary file followed by an atomic replacement. Passwords are
 generated with Python's cryptographically secure `secrets` module.
 
+Configure motion and visual themes:
+
+```powershell
+devpilot config show
+devpilot config set animations false
+devpilot config set reduced-motion true
+devpilot config reset
+devpilot theme list
+devpilot theme set hacker
+devpilot hacker banner
+```
+
+Settings are validated and stored in the operating system's standard user config
+directory. Hacker Mode changes presentation only; it does not enable security or
+network-access features.
+
 Run the quality checks:
 
 ```powershell

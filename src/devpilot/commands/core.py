@@ -6,6 +6,7 @@ from rich.panel import Panel
 from rich.table import Table
 
 from ..core.console import console
+from ..core.theme import active_palette
 from ..services.doctor import run_doctor_checks
 
 
@@ -24,25 +25,29 @@ def version_command() -> None:
 
 def about_command() -> None:
     """Show a short description of the project."""
+    palette = active_palette()
     console.print(
         Panel.fit(
             "A modular developer toolkit for the terminal.\n"
             "Built with Python, Typer, and Rich.",
             title="DevPilot CLI",
-            border_style="cyan",
+            border_style=palette.primary,
         )
     )
 
 
 def doctor_command() -> None:
     """Check whether the local environment can run DevPilot."""
+    palette = active_palette()
     table = Table(title="DevPilot Doctor")
-    table.add_column("Check", style="cyan")
+    table.add_column("Check", style=palette.primary)
     table.add_column("Status")
     table.add_column("Details")
 
     for check in run_doctor_checks():
-        status = "[green]PASS[/green]" if check.passed else "[red]FAIL[/red]"
+        status_style = palette.success if check.passed else palette.error
+        status_text = "PASS" if check.passed else "FAIL"
+        status = f"[{status_style}]{status_text}[/{status_style}]"
         table.add_row(check.name, status, check.details)
 
     console.print(table)
