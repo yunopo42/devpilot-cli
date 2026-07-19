@@ -27,8 +27,8 @@
 ## Publication
 
 - [x] GitHub Actions is green on `main`.
-- [ ] TestPyPI Trusted Publishing is configured for `test-publish.yml`.
-- [ ] TestPyPI upload and clean installation succeed.
+- [x] TestPyPI Trusted Publishing is configured for `test-publish.yml`.
+- [x] TestPyPI upload and clean installation succeed.
 - [ ] Signed or annotated `v0.1.0` tag is created.
 - [ ] GitHub Release is published from the tag.
 - [ ] PyPI upload is confirmed explicitly by the maintainer.

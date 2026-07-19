@@ -8,7 +8,7 @@ The project follows [Semantic Versioning](https://semver.org/).
 
 ### Planned
 
-- Publish the first release candidate to TestPyPI and PyPI.
+- Promote the verified `v0.1.0` package from TestPyPI to PyPI.
 
 ## [0.1.0] - 2026-07-19
 
